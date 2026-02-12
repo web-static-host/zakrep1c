@@ -1,0 +1,202 @@
+:root {
+    --primary: #007bff;
+    --bg: #f4f7f6;
+    --text: #333;
+    --success: #28a745;
+    --warning: #ffc107;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ГЛАВНАЯ ОБЕРТКА */
+.main-layout {
+    display: flex;
+    justify-content: center; /* Центрирует содержимое */
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1400px;
+    position: relative;
+}
+
+/* ОСНОВНОЙ КОНТЕЙНЕР (ИНСТРУКЦИЯ) */
+.container {
+    background: white;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: 555px; /* Фиксированная высота */
+    box-sizing: border-box; /* Чтобы паддинги не раздували блок */
+    
+    position: relative;
+    z-index: 10;
+}
+
+header { border-bottom: 2px solid #eee; margin-bottom: 20px; }
+h1 { font-size: 1.5rem; margin-bottom: 10px; color: var(--primary); }
+
+#step-content { 
+    margin-bottom: 20px; 
+    height: 180px; /* ЗАМЕНИЛ min-height на фиксированную высоту */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+h2 { 
+    font-size: 1.25rem; 
+    line-height: 1.4; 
+    margin-bottom: 15px; 
+    min-height: 3.5rem; /* Всегда занимает место как под 2 полные строки */
+    display: block;
+}
+
+#description {
+    font-size: 0.95rem;
+    color: #555;
+    min-height: 80px; /* Резервирует место под описание, даже если его нет */
+}
+    
+
+.options-grid {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+}
+
+.option-btn {
+    padding: 15px 20px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+    background-color: #f0f7ff;
+}
+
+footer {
+    margin-top: auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#btn-back { background: #6c757d; color: white; }
+#btn-restart { background: #f8f9fa; color: #333; border: 1px solid #ddd; }
+
+/* ЧЕРНОВИК: АБСОЛЮТНОЕ ПОЗИЦИОНИРОВАНИЕ СПРАВА */
+#draft-wrapper {
+    position: absolute;
+    /* Сдвигаем черновик вправо от центральной оси */
+    left: calc(50% + 370px); 
+    top: 0;
+    z-index: 100;
+}
+
+.draft-toggle-btn {
+    background: var(--primary);
+    color: white;
+    border: 1px solid #0056b3;
+    padding: 15px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+#draft-panel {
+    background: white;
+    width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+.draft-header {
+    background: #f1f3f5;
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.draft-btn {
+    background: white;
+    border: 1px solid #adb5bd;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.2s;
+}
+
+.draft-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #e7f1ff;
+}
+
+#btn-draft-clear:hover {
+    border-color: #e03131;
+    color: #e03131;
+    background: #fff5f5;
+}
+
+#draft-input {
+    width: 100%;
+    height: 500px;
+    padding: 15px;
+    border: none;
+    border-radius: 0 0 12px 12px;
+    resize: none;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.hidden { display: none !important; }
+
+/* Если экран меньше 1300px, крепим к правому краю окна */
+@media (max-width: 1300px) {
+    #draft-wrapper {
+        position: fixed;
+        left: auto;
+        right: 15px;
+        top: 20px;
+    }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструкция: Закрепление ЭДО</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-layout">
+        <div class="container">
+            <header>
+                <h1>Алгоритм закрепления 1С-ЭДО</h1>
+            </header>
+
+            <main id="wizard">
+                <div id="step-content">
+                    <h2 id="question">Загрузка...</h2>
+                    <div id="description" class="description-text"></div>
+                </div>
+                
+                <div id="options" class="options-grid"></div>
+            </main>
+
+            <footer>
+                <button id="btn-back" class="nav-btn">← Назад</button>
+                <button id="btn-restart" class="nav-btn">Начать заново ↻</button>
+            </footer>
+        </div>
+
+        <div id="draft-wrapper">
+            <button id="btn-draft-open" class="draft-toggle-btn">Черновик</button>
+            <div id="draft-panel" class="hidden">
+                <div class="draft-header">
+                    <span>Черновик</span>
+                    <div class="draft-controls">
+                        <button id="btn-draft-clear" class="draft-btn">Очистить</button>
+                        <button id="btn-draft-close" class="draft-btn">Свернуть</button>
+                    </div>
+                </div>
+                <textarea id="draft-input" placeholder="Сюда можно скопировать текст задачи, чтобы не переключаться между инструкцией и задачей"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
