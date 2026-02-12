@@ -38,7 +38,6 @@ body {
     flex-direction: column;
     height: 555px; /* Фиксированная высота */
     box-sizing: border-box; /* Чтобы паддинги не раздували блок */
-    
     position: relative;
     z-index: 10;
 }
@@ -136,13 +135,13 @@ footer {
     width: 450px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border: 1px solid #ccc;
+    
     display: flex;
     flex-direction: column;
 }
 
 .draft-header {
-    background: #f1f3f5;
+    background: rgb(249, 249, 249);
     padding: 12px 15px;
     border-bottom: 1px solid #dee2e6;
     border-radius: 12px 12px 0 0;
