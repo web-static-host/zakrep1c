@@ -1,4 +1,14 @@
 const steps = {
+    // САМЫЙ ПЕРВЫЙ ШАГ ВЫБОРА
+    choice: {
+        question: "У клиента Фреш?",
+        options: [
+            { text: "Да", next: "fr_start" },
+            { text: "Нет", next: "start" }
+        ]
+    },
+
+    // --- СТАНДАРТНЫЙ АЛГОРИТМ ---
     start: {
         question: "Вводим ИНН. Организация есть в списке?",
         options: [
@@ -6,7 +16,8 @@ const steps = {
             { text: "Нет", next: "create_org" }
         ]
     },
-    create_org: {
+
+        create_org: {
         description: "1. Добавляем организацию.\n2. Дату окончания периода сопровождения оставляем пустой.\n3. Прикрепляем договор/счет.",
         question: "Идентификатор (ID) появился автоматически после создания?",
         options: [
@@ -95,7 +106,7 @@ const steps = {
         description: "Необходимо зарегистрировать тариф. После регистрации начать заново",
         question: "Начать заново?",
         options: [
-            { text: "В начало ↻", next: "start" }
+            { text: "В начало ↻", next: "choice" }
         ]
     },
     atypical_situation: {
@@ -178,33 +189,208 @@ const steps = {
         description: "Лк, который предоставил клиент, не существует. \nНеобходимо запросить данные реального лк, либо создать отдельный рег номер (1С:Клиент ЭДО). \nПри этом, нужно перерегистрировать тариф на новый рег номер\nПосле получения новых данных, начать заново",
         isFinal: true,
         type: 'error'
+    },
+
+
+    // --- АЛГОРИТМ ФРЕШ --- //////////////////////////////////////////////////////////////////////////////
+    fr_start: {
+        question: "Вводим ИНН. Организация есть в списке?",
+        options: [
+            { text: "Да", next: "fr_org_exists" },
+            { text: "Нет", next: "fr_create_org" }
+        ]
+    },
+        fr_create_org: {
+        description: "1. Добавляем организацию.\n2. Дату окончания периода сопровождения оставляем пустой.\n3. Прикрепляем договор/счет.",
+        question: "Идентификатор (ID) появился автоматически после создания?",
+        options: [
+            { text: "Да", next: "fr_tariff_type_select" },
+            { text: "Нет", next: "fr_click_add_ids" }
+        ]
+    },
+    fr_org_exists: {
+        description: "1. Прикрепляем договор/счет.\n2. Нажимаем на название организации.",
+        question: "Внутри организации уже отображается ID?",
+        options: [
+            { text: "Да", next: "fr_tariff_type_select" },
+            { text: "Нет", next: "fr_click_add_ids" }
+        ]
+    },
+    fr_click_add_ids: {
+        description: "Нажимаем кнопку 'Добавить идентификаторы'.",
+        question: "После нажатия кнопки ID подтянулся автоматически?",
+        options: [
+            { text: "Да", next: "fr_confirm_id_row" }, 
+            { text: "Нет", next: "fr_manual_input" }
+        ]
+    },
+    fr_manual_input: {
+        description: "Вводим логин и почту из задачи.\nВ случае с фрешем, логином является 1c-fresh_эл.почта",
+        question: "ID появился в списке после ручного ввода?",
+        options: [
+            { text: "Да", next: "fr_confirm_id_row" },
+            { text: "Нет", next: "fr_web_registrar_check" }
+        ]
+    },
+    fr_confirm_id_row: {
+        description: "Выбираем id и нажимаем кнопку 'Добавить идентификатор'",
+        question: "",
+        options: [
+            { text: "Далее", next: "fr_tariff_type_select" }
+        ]
+    },
+    fr_web_registrar_check: {
+        question: "Заходим на Веб-регистратор. По ИНН/КПП найдены продукты 1С-ЭДО?",
+        options: [
+            { text: "Да", next: "fr_error_wrong_data_fresh" },
+            { text: "Нет", next: "fr_identify_operator" }
+        ]
+    },
+    fr_identify_operator: {
+        question: "Какой оператор ЭДО указан у клиента?",
+        options: [
+            { text: "Астрал", next: "fr_error_astral" },
+            { text: "Такском", next: "fr_error_taxcom" }
+        ]
+    },
+    fr_tariff_type_select: {
+        question: "Какой тип тарифа указан в вашей задаче?",
+        options: [
+            { text: "Предоплата", next: "fr_check_our_service" },
+            { text: "Постоплата", next: "fr_success_end" }
+        ]
+    },
+    fr_check_our_service: {
+        question: "Клиент обслуживается у нас по Фрешу?",
+        options: [
+            { text: "Да", next: "fr_success_end" },
+            { text: "Нет", next: "fr_check_fr_prefix" }
+        ]
+    },
+    fr_check_fr_prefix: {
+        question: "Абонент начинается на FR?",
+        options: [
+            { text: "Да", next: "fr_search_user_cl" },
+            { text: "Нет", next: "fr_prepaid_start" }
+        ]
+    },
+    fr_prepaid_start: {
+        description: "1. Переходим в раздел 'Найти пользователя'.\n2. Вводим логин и почту абонента ID.\n3. Переходим в лк, нажав на номер абонента. если их несколько, то смотрим, какой указан в id",
+        question: "В пунктах 'Регистрация' и '1С:Готовое рабочее место и 1С:Аренда' есть рег. номера?",
+        options: [
+            { text: "Да", next: "fr_manager_reg_priority" },
+            { text: "Нет", next: "fr_create_client_edo_manager" }
+        ]
+    },
+    fr_manager_reg_priority: {
+        description: "1. Передаем один из подходящих рег номеров менеджеру. В приоритете 1С:Клиент ЭДО. \n2. После того, как менеджер зарегистрирует тариф, через некоторое время проверяем тариф во вкладке Договоры. Обычно он появляется в течение часа",
+        question: "Тариф появился?",
+        options: [
+            { text: "Да", next: "fr_success_end" },
+            { text: "Нет", next: "fr_atypical_situation" }
+        ]
+    },
+    fr_create_client_edo_manager: {
+        description: "1. В пункте 'Регистрация' создать продукт 1С:Клиент ЭДО и передать менеджеру рег номер. \n2. После того, как менеджер зарегистрирует тариф, через некоторое время проверяем тариф во вкладке Договоры. Обычно он появляется в течение часа",
+        question: "Тариф появился?",
+        options: [
+            { text: "Да", next: "fr_success_end" },
+            { text: "Нет", next: "fr_atypical_situation" }
+        ]
+    },
+    fr_search_user_cl: {
+        description: "1. Переходим в Найти пользователя и вводим логин и почту абонента id\n2. Переходим в лк, абонент которого начинается на CL.",
+        question: "В пунктах 'Регистрация' и '1С:Готовое рабочее место и 1С:Аренда' есть какой-либо рег. номер?",
+        options: [
+            { text: "Да", next: "fr_manager_reg_priority_cl" },
+            { text: "Нет", next: "fr_create_client_edo_cl" }
+        ]
+    },
+    fr_manager_reg_priority_cl: {
+        description: "1. Передаем один из подходящих рег номеров менеджеру. В приоритете 1С:Клиент ЭДО. \n2. После того, как менеджер зарегистрирует тариф, через некоторое время проверяем тариф во вкладке Договоры. Обычно он появляется в течение часа",
+        question: "Тариф появился?",
+        options: [
+            { text: "Да", next: "fr_change_owner_process" },
+            { text: "Нет", next: "fr_atypical_situation" }
+        ]
+    },
+    fr_create_client_edo_cl: {
+        description: "1. В пункте 'Регистрация' создать продукт 1С:Клиент ЭДО и передать менеджеру рег номер. \n2. После того, как менеджер зарегистрирует тариф, через некоторое время проверяем тариф во вкладке Договоры. Обычно он появляется в течение часа",
+        question: "Тариф появился?",
+        options: [
+            { text: "Да", next: "fr_change_owner_process" },
+            { text: "Нет", next: "fr_atypical_situation" }
+        ]
+    },
+    fr_change_owner_process: {
+        description: "1. Переходим к списку id, ставим галочку рядом с id и нажимаем 'Изменить владельца'. \n2. Указываем код абонента из личного кабинета и нажимаем 'Сменить владельца'. \n3. В задаче пишем 'был абонент (...), сменил на (...)'",
+        question: "Абонент успешно закреплен!",
+        isFinal: true,
+        type: 'success'
+    },
+    fr_success_end: {
+        description: "Абонент успешно закреплен!",
+        isFinal: true,
+        type: 'success'
+    },
+    fr_atypical_situation: {
+        description: "Нестандартная ситуация, необходимо проверять, правильно ли зарегистрирован тариф",
+        isFinal: true,
+        type: 'error'
+    },
+    fr_error_wrong_data_fresh: {
+        description: "Значит у клиента id существует, но данные неправильные. \nКлиенту необходимо прислать почту, которая у него указана в  1С:Фреш. \nСообщить менеджеру. \nПосле предоставления корректных данных начать заново",
+        isFinal: true,
+        type: 'error'
+    },
+    fr_error_astral: {
+        description: "Клиент не создал профиль ЭДО. \nСообщить менеджеру. \nПосле создания начать заново",
+        isFinal: true,
+        type: 'error'
+    },
+    fr_error_taxcom: {
+        description: "Либо у клиента нет профиля ЭДО, либо предоставлены неправильные данные. \nКлиенту необходимо прислать почту, которая у него указана в  1С:Фреш \nСообщить менеджеру. \nПосле исправления проблемы, начать заново.\n*На ВР нет данных по Такскому, поэтому на 100% причину отсутствия id мы знать не можем",
+        isFinal: true,
+        type: 'error'
     }
+    
 };
 
+// ДВИЖОК
 let history = [];
-let currentStepId = 'start';
+let currentStepId = 'choice'; 
 
 function render() {
     const wizard = document.getElementById('step-content');
     const optionsGrid = document.getElementById('options');
     const step = steps[currentStepId];
 
+    if (!step) {
+        console.error("Шаг не найден:", currentStepId);
+        return;
+    }
+
     wizard.innerHTML = "";
     optionsGrid.innerHTML = "";
 
+    // 1. Описание
     if (step.description) {
         const descEl = document.createElement('div');
         descEl.className = "description-text";
+        descEl.style.whiteSpace = "pre-wrap"; 
         descEl.innerText = step.description;
         if (step.type === 'success') descEl.classList.add('final-step');
         if (step.type === 'error') descEl.classList.add('error-step');
         wizard.appendChild(descEl);
     }
 
+    // 2. Вопрос
     const questionEl = document.createElement('h2');
-    questionEl.innerText = step.question;
+    questionEl.id = "question";
+    questionEl.innerText = step.question || "";
     wizard.appendChild(questionEl);
 
+    // 3. Кнопки
     if (step.options) {
         step.options.forEach(opt => {
             const btn = document.createElement('button');
@@ -220,9 +406,9 @@ function render() {
     }
 
     document.getElementById('btn-back').style.visibility = history.length > 0 ? 'visible' : 'hidden';
-
 }
 
+// Кнопки навигации
 document.getElementById('btn-back').onclick = () => {
     if (history.length > 0) {
         currentStepId = history.pop();
@@ -232,37 +418,10 @@ document.getElementById('btn-back').onclick = () => {
 
 document.getElementById('btn-restart').onclick = () => {
     history = [];
-    currentStepId = 'start';
+    currentStepId = 'choice'; // Сброс на выбор алгоритма
     render();
 };
 
+
+
 render();
-
-
-        const draftOpenBtn = document.getElementById('btn-draft-open');
-        const draftPanel = document.getElementById('draft-panel');
-        const draftCloseBtn = document.getElementById('btn-draft-close');
-        const draftClearBtn = document.getElementById('btn-draft-clear');
-        const draftInput = document.getElementById('draft-input');
-
-        draftOpenBtn.onclick = () => {
-            draftPanel.classList.remove('hidden');
-            draftOpenBtn.classList.add('hidden');
-        };
-
-        draftCloseBtn.onclick = () => {
-            draftPanel.classList.add('hidden');
-            draftOpenBtn.classList.remove('hidden');
-        };
-
-        draftClearBtn.onclick = () => {
-            draftInput.value = '';
-        };
-
-        draftInput.onfocus = function() {
-            this.setAttribute('data-placeholder', this.placeholder);
-            this.placeholder = '';
-        };
-        draftInput.onblur = function() {
-            this.placeholder = this.getAttribute('data-placeholder');
-        };
