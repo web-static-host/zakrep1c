@@ -423,5 +423,38 @@ document.getElementById('btn-restart').onclick = () => {
 };
 
 
-
+// Инициализация первого экрана
 render();
+
+// --- ЛОГИКА ЧЕРНОВИКА (ДОБАВИТЬ ЭТО) ---
+const draftOpenBtn = document.getElementById('btn-draft-open');
+const draftPanel = document.getElementById('draft-panel');
+const draftCloseBtn = document.getElementById('btn-draft-close');
+const draftClearBtn = document.getElementById('btn-draft-clear');
+const draftInput = document.getElementById('draft-input');
+
+// Открыть панель
+draftOpenBtn.onclick = () => {
+    draftPanel.classList.remove('hidden');
+    draftOpenBtn.classList.add('hidden');
+};
+
+// Свернуть панель
+draftCloseBtn.onclick = () => {
+    draftPanel.classList.add('hidden');
+    draftOpenBtn.classList.remove('hidden');
+};
+
+// Очистить текст
+draftClearBtn.onclick = () => {
+    draftInput.value = '';
+};
+
+// Управление подсказкой в поле ввода
+draftInput.onfocus = function() {
+    this.setAttribute('data-placeholder', this.placeholder);
+    this.placeholder = '';
+};
+draftInput.onblur = function() {
+    this.placeholder = this.getAttribute('data-placeholder');
+};
