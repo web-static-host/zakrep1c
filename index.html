@@ -8,43 +8,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-layout">
-        <div class="container">
-            <header>
-                <h1>Алгоритм закрепления 1С-ЭДО</h1>
-            </header>
-
-            <main id="wizard">
-                <div id="step-content">
-                    <h2 id="question">Загрузка...</h2>
-                    <div id="description" class="description-text"></div>
-                </div>
+    <div class="main-container">
+        
+        <div class="content-split">
+            
+            <div class="left-panel">
                 
-                <div id="options" class="options-grid"></div>
-            </main>
-
-            <footer>
-                <button id="btn-back" class="nav-btn">← Назад</button>
-                <button id="btn-restart" class="nav-btn">Начать заново ↻</button>
-            </footer>
-        </div>
-
-        <div id="draft-wrapper">
-            <button id="btn-draft-open" class="draft-toggle-btn">Черновик</button>
-            <div id="draft-panel" class="hidden">
-                <div class="draft-header">
-                    <span>Черновик</span>
-                    <div class="draft-controls">
-                        <button id="btn-draft-clear" class="draft-btn">Очистить</button>
-                        <button id="btn-draft-close" class="draft-btn">Свернуть</button>
-                    </div>
+                <div class="block instruction-block">
+                    <h1 class="main-title">Алгоритм закрепления 1С-ЭДО и 1С-ЭПД</h1>
+                    <div id="step-description" class="description-text"></div>
                 </div>
-                <textarea id="draft-input" placeholder="Сюда можно скопировать текст задачи, чтобы не переключаться между инструкцией и задачей"></textarea>
+
+                <div class="block question-block">
+                    <h2 id="step-question">Загрузка...</h2>
+                    <div id="options-grid" class="options-grid"></div>
+                </div>
+
+                <div class="block draft-block">
+                    <div class="draft-header">
+                        <span>Черновик</span>
+                        <button id="btn-draft-clear" class="draft-btn">Очистить</button>
+                    </div>
+                    <textarea id="draft-input" placeholder="Сюда можно скопировать текст задачи или данные клиента..."></textarea>
+                </div>
+
             </div>
+
+            <div class="right-panel">
+                <img id="step-image" src="" alt="Скриншот шага" style="display: none;">
+            </div>
+
         </div>
+
+        <footer>
+            <button id="btn-back" class="nav-btn btn-text">← Назад</button>
+            <button id="btn-restart" class="nav-btn btn-text">Начать заново ↻</button>
+        </footer>
+
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
