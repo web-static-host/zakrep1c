@@ -807,7 +807,7 @@ const steps = {
         ]
     },
     old_fr_success_end: {
-        description: "Абонент успешно закреплен!",
+        description: "Абонент успешно закреплен!\nНе забудьте прикрепить счет/договор",
         isFinal: true,
         type: 'success',
         options: [
