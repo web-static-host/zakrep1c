@@ -515,7 +515,7 @@ const steps = {
         ]
     },
     fr_success_end_classic_new: {
-        description: "Нажмите на код абонента. он должен начинаться на FR",
+        description: "Нажмите на код абонента",
         image: "images/фреш классик 1.jpg", 
         options: [
             { text: "Далее", next: "fr_check_tariff_subscriber" },
