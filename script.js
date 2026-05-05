@@ -510,12 +510,17 @@ const steps = {
         question: "Абонент начинается на FR?",
         image: "images/абонент фр.jpg", 
         options: [
-            { text: "Да", next: "fr_check_tariff_subscriber" }, 
+            { text: "Да", next: "fr_success_end_classic_new" }, 
             { text: "Нет", next: "fr_search_fresh_user" } 
         ]
     },
-
-    
+    fr_success_end_classic_new: {
+        description: "Нажмите на код абонента. он должен начинаться на FR",
+        image: "images/фреш классик 1.jpg", 
+        options: [
+            { text: "Далее", next: "fr_check_tariff_subscriber" },
+        ]
+    },
     fr_check_tariff_subscriber: {
         description: "Во вкладке 'Тарифы, включающие 1С-ЭДО' будет отображаться подключенный тариф.\nОснование - Подписка Фреш ..., 1С через Интернет - 1cfresh.com",
         image: "images/фреш классик 2.jpg", 
