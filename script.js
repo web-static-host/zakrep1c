@@ -832,11 +832,10 @@ const steps = {
 
 
 // ДВИЖОК
-// ВРЕМЕННО: Пытаемся загрузить сохраненный шаг из памяти браузера
 let history = JSON.parse(localStorage.getItem('dev_history')) || [];
 let currentStepId = localStorage.getItem('dev_step') || 'choice'; 
 
-// ВРЕМЕННО: Функция для сохранения текущего состояния
+// Функция для сохранения текущего состояния
 function saveState() {
     localStorage.setItem('dev_step', currentStepId);
     localStorage.setItem('dev_history', JSON.stringify(history));
@@ -854,19 +853,16 @@ function render() {
     descEl.className = 'description-text'; 
     optionsGrid.innerHTML = "";
 
-    // 1. Инструкция / Описание
     if (step.description) {
-        descEl.innerHTML = step.description; // innerHTML для поддержки ссылок
+        descEl.innerHTML = step.description; 
         if (step.type === 'success') descEl.classList.add('success-text');
         if (step.type === 'error') descEl.classList.add('error-text');
     } else {
         descEl.innerHTML = "";
     }
 
-    // 2. Вопрос
     questionEl.innerText = step.question || "";
 
-    // 3. Скриншот (Правая панель)
     if (step.image) {
         imageEl.src = step.image;
         imageEl.style.display = 'block';
@@ -875,7 +871,6 @@ function render() {
         imageEl.style.display = 'none';
     }
 
-    // 4. Кнопки
     if (step.options) {
         step.options.forEach(opt => {
             const btn = document.createElement('button');
@@ -884,7 +879,7 @@ function render() {
             btn.onclick = () => {
                 history.push(currentStepId);
                 currentStepId = opt.next;
-                saveState(); // Сохраняем шаг при клике
+                saveState(); 
                 render();
             };
             optionsGrid.appendChild(btn);
@@ -898,7 +893,7 @@ function render() {
 document.getElementById('btn-back').onclick = () => {
     if (history.length > 0) {
         currentStepId = history.pop();
-        saveState(); // Сохраняем шаг при возврате
+        saveState(); 
         render();
     }
 };
@@ -906,26 +901,21 @@ document.getElementById('btn-back').onclick = () => {
 document.getElementById('btn-restart').onclick = () => {
     history = [];
     currentStepId = 'choice';
-    saveState(); // Обнуляем память
+    saveState();
     render();
 };
 
-// --- ВРЕМЕННО: Логика сохранения черновика ---
 const draftInput = document.getElementById('draft-input');
 
-// При загрузке страницы вставляем сохраненный текст
 draftInput.value = localStorage.getItem('dev_draft') || '';
 
-// Сохраняем текст каждый раз, когда вы что-то печатаете
 draftInput.addEventListener('input', (e) => {
     localStorage.setItem('dev_draft', e.target.value);
 });
 
-// Очистка черновика с удалением из памяти
 document.getElementById('btn-draft-clear').onclick = () => {
     draftInput.value = '';
     localStorage.removeItem('dev_draft');
 };
 
-// Инициализация первого экрана
 render();

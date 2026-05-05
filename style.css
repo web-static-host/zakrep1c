@@ -38,7 +38,7 @@ body {
     display: flex;
     flex: 1;
     gap: 20px;
-    min-height: 0; /* Критично для работы скролла внутри блоков */
+    min-height: 0; 
 }
 
 /* ЛЕВАЯ ПАНЕЛЬ */
@@ -171,7 +171,7 @@ body {
 /* ПРАВАЯ ПАНЕЛЬ (СКРИНШОТ) */
 .right-panel {
     flex: 1;
-    background: var(--white); /* Сделали фон белым, как у левых блоков */
+    background: var(--white);
     border-radius: 12px;
     border: 1px solid var(--border-soft);
     box-shadow: var(--shadow);
@@ -189,7 +189,6 @@ body {
     height: auto;
     object-fit: contain; 
     border-radius: 4px;
-    /* Сделали тень мягче, чтобы она хорошо смотрелась на белом фоне */
     box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
 }
 
@@ -218,7 +217,6 @@ footer {
 .success-text { color: #28a745 !important; font-weight: bold; }
 .error-text { color: #dc3545 !important; font-weight: bold; }
 
-/* Стили для ссылок внутри инструкций */
 .description-text a {
     color: var(--primary);
     text-decoration: none;
